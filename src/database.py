@@ -62,6 +62,14 @@ class RequestHash(Base):
         DateTime, nullable=False, default=datetime.now()
     )
 
+def save_request(request: str, response) -> None:
+    with make_session() as s:
+        RequestHash(
+            request=request,
+            response=response,
+            response_hash=sha256(response).hexdigest(),
+            requested_at=datetime.now(),
+        )
 
 def db_health_status_message() -> str:
     with make_session() as s:

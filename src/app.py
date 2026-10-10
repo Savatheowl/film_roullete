@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 
 from src.config import Config
-from src.database import Base, User, _get_engine, db_health_status_message
+from src.database import init_db
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -9,10 +9,6 @@ app.config["SECRET_KEY"] = Config.SECRET_KEY
 app.config["DEBUG"] = Config.DEBUG
 app.json.ensure_ascii = False
 
-with app.app_context():
-    engine = _get_engine()
-    Base.metadata.create_all(engine)
-    print("Таблицы созданы (или уже существуют)")
 
 
 @app.route("/")
@@ -22,7 +18,7 @@ def index():
 
 
 @app.route("/health")
-def index():
+def health_flask():
     return jsonify({"message": "Сервер работает"})
 
 
@@ -36,4 +32,5 @@ def app_run() -> None:
 
 
 if __name__ == "__main__":
+    init_db()
     app_run()
