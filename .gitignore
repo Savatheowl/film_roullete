@@ -1,4 +1,10 @@
 .venv/
+venv/
+
 data/
+__pycache__/
+*.pyc
 
 .env
+database.db
+.idea/

@@ -1,21 +1,23 @@
-from sqlalchemy import create_engine, Engine
+from sqlalchemy import create_engine, Engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
-from sqlalchemy import
 from contextlib import contextmanager
+from src.config import Config
 
 
 global_engine = None
 def _get_engine():
-    global engine
-    if engine is None:
-        engine = create_engine("sqlite:///database.db", echo=True)
-    return engine
+    global global_engine
+    if global_engine is None:
+        global_engine = create_engine(Config.DATABASE_URL, echo=True)
+    return global_engine
 
-Session = sessionmaker(bind=engine)
+
+Session = sessionmaker()
 @contextmanager
 def make_session(engine: Engine):
+    session = None
     try:
-        session = Session(bind=_get_engine())
+        session = Session(bind=engine)
         yield session
     except Exception as e:
         session.rollback()
@@ -25,8 +27,7 @@ def make_session(engine: Engine):
 
 
 class Base(declarative_base()):
-    pass
-
+    __abstract__ = True
 
 
 class User(Base):
