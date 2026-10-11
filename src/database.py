@@ -3,7 +3,7 @@ from datetime import datetime
 from hashlib import sha256
 
 from sqlalchemy import (DateTime, Engine, Integer, String, Text, create_engine,
-                        text)
+                        text, insert)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
 from src.config import Config
@@ -62,6 +62,40 @@ class RequestHash(Base):
         DateTime, nullable=False, default=datetime.now()
     )
 
+
+class Genres(Base):
+    __tablename__ = "genres"
+    
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    
+    tmdb_id: Mapped[int] = mapped_column(Integer, unique=True, nullable=False)
+    name_ru: Mapped[str] = mapped_column(String, nullable=False)
+    name_en: Mapped[str] = mapped_column(String, nullable=False)
+    
+    
+def add_or_update_genre(
+                        tmdb_id: int = None,
+                        name_ru: str = None,
+                        name_en: str = None,
+                        ) -> None:
+    new_genre = Genres(tmdb_id, name_ru, name_en)
+    stmt = insert(Genres).values(new_genre)
+    with make_session() as s:
+        s.execute(stmt)
+
+
+def add_or_update_bunch_genres(genres: list[dict]) -> None:
+    genres_obj
+
+    
+# def save_request(request: str, response) -> None:
+#     with make_session() as s:
+#         RequestHash(
+#             request=request,
+#             response=response,
+#             response_hash=sha256(response).hexdigest(),
+#             requested_at=datetime.now(),
+#         )
 
 def db_health_status_message() -> str:
     with make_session() as s:
