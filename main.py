@@ -4,6 +4,7 @@ from src.api_fetcher import get_genre_list
 
 import asyncio
 
+
 async def main():
     init_db()
     app_run()

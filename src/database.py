@@ -5,7 +5,7 @@ from hashlib import sha256
 from sqlalchemy import (DateTime, Engine, Integer, String, Text, create_engine,
                         text, insert)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
-
+from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from src.config import Config
 
 engine = None
@@ -50,13 +50,13 @@ class User(Base):
     )
 
 
-class RequestHash(Base):
-    __tablename__ = "request_hash"
+class RequestCache(Base):
+    __tablename__ = "request_cache"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    # при запросе сав сделай чтобы сначала была обработка что прише лкорректный запрос, а потом запись в БД
+    # при запросе сав сделай чтобы сначала была обработка, что пришел корректный запрос, а потом запись в БД
     request: Mapped[str] = mapped_column(String, nullable=False, unique=True)
-    response: Mapped[str] = mapped_column(String, nullable=False, unique=True)
+    response: Mapped[str] = mapped_column(String, nullable=False)
     response_hash: Mapped[str] = mapped_column(String, nullable=False)
     requested_at: Mapped[datetime] = mapped_column(
         DateTime, nullable=False, default=datetime.now()
@@ -72,20 +72,21 @@ class Genres(Base):
     name_ru: Mapped[str] = mapped_column(String, nullable=False)
     name_en: Mapped[str] = mapped_column(String, nullable=False)
     
-    
-def add_or_update_genre(
-                        tmdb_id: int = None,
-                        name_ru: str = None,
-                        name_en: str = None,
-                        ) -> None:
-    new_genre = Genres(tmdb_id, name_ru, name_en)
-    stmt = insert(Genres).values(new_genre)
+
+def add_or_update_genre(tmdb_id: int = None, name_ru: str = None, name_en: str = None) -> None:
+    stmt = sqlite_insert(Genres).values(tmdb_id=tmdb_id, name_ru=name_ru, name_en=name_en)
+
+    # Если жанр с таким tmdb_id уже есть — обновляем name_ru и name_en
+    stmt = stmt.on_conflict_do_update(index_elements=["tmdb_id"], set_=dict(name_ru=name_ru, name_en=name_en))
+
     with make_session() as s:
         s.execute(stmt)
+        s.commit()
 
 
 def add_or_update_bunch_genres(genres: list[dict]) -> None:
-    genres_obj
+    pass
+    # genres_obj
 
     
 # def save_request(request: str, response) -> None:

@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 
 from src.config import Config
-from src.database import init_db
+from src.database import init_db, db_health_status_message
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -10,11 +10,9 @@ app.config["DEBUG"] = Config.DEBUG
 app.json.ensure_ascii = False
 
 
-
 @app.route("/")
 def index():
     return jsonify({"message": "Привет, народ!"})
-
 
 
 @app.route("/health")
