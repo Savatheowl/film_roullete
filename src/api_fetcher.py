@@ -4,11 +4,16 @@ import asyncio
 
 from src.config import Config
 from typing import Any
+import src.database as db
+
 
 import json
 
+# api havelimitation aroung 40 requests per second
+REQEST_PS = 35
 
 config = Config()
+
 
 HEADERS = {
     "accept": "application/json",
@@ -17,8 +22,8 @@ HEADERS = {
 
 
 
-def save_to_db() -> None:
-    pass
+def save_genres_to_db(genres: list[dict]) -> None:
+    db.add_or_update_genre()
 
 
 async def _get_sth_base(url: str) -> Any:
