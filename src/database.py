@@ -113,7 +113,6 @@ def add_or_update_genre(tmdb_id: int, name_ru: str, name_en: str) -> None:
 
     with make_session() as s:
         s.execute(stmt)
-        s.commit()
 
 
 def db_health_status_message() -> str:
