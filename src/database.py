@@ -2,6 +2,7 @@ from contextlib import contextmanager
 from datetime import datetime
 from hashlib import sha256
 from typing import Any
+import json
 
 
 from sqlalchemy import (DateTime, Engine, Integer, String, Text, create_engine,
@@ -64,6 +65,28 @@ class RequestCache(Base):
         DateTime, nullable=False, default=datetime.now()
     )
 
+def cache_request(request: str, response: dict) -> None:
+    with make_session() as s:
+        stmt = sqlite_insert(RequestCache).values(
+        request=request, 
+        response=json.dumps(response, sort_keys=True), 
+        response_hash=sha256(json.dumps(response, sort_keys=True).encode("utf-8")).hexdigest(), 
+        requested_at=datetime.now()
+        )
+        stmt = stmt.on_conflict_do_update(index_elements=["request"], set_=dict(response=json.dumps(response), response_hash=sha256(json.dumps(response, sort_keys=True).encode("utf-8")).hexdigest(), requested_at=datetime.now()))
+        s.execute(stmt)
+
+def find_in_cache_by_request(request: str) -> int | None:
+    with make_session() as s:
+        stmt = select(RequestCache).where(RequestCache.request == request)
+        row = s.execute(stmt).scalar_one_or_none()
+        return None if not row else row.id
+    
+def get_cache_by_id(id: int) -> RequestCache:
+    with make_session() as s:
+            stmt = select(RequestCache).where(RequestCache.id == id)
+            row = s.execute(stmt).scalar_one()
+            return row
 
 class Genres(Base):
     __tablename__ = "genres"
@@ -91,15 +114,6 @@ def add_or_update_genre(tmdb_id: int, name_ru: str, name_en: str) -> None:
         s.execute(stmt)
         s.commit()
 
-    
-# def save_request(request: str, response) -> None:
-#     with make_session() as s:
-#         RequestHash(
-#             request=request,
-#             response=response,
-#             response_hash=sha256(response).hexdigest(),
-#             requested_at=datetime.now(),
-#         )
 
 def db_health_status_message() -> str:
     with make_session() as s:
