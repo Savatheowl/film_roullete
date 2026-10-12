@@ -13,7 +13,6 @@ async def main():
         language="ru",
         page=1,
     )
-    print(a)
     
 
 if __name__ == "__main__":
