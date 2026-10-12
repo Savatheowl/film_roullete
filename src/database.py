@@ -29,6 +29,7 @@ def make_session():
     try:
         session = Session()
         yield session
+        session.commit()
     except Exception as e:
         session.rollback()
         raise e
