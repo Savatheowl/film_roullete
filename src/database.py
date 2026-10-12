@@ -67,14 +67,15 @@ class RequestCache(Base):
     )
 
 def cache_request(request: str, response: dict) -> None:
+    response_text = json.dumps(response, sort_keys=True)
     with make_session() as s:
         stmt = sqlite_insert(RequestCache).values(
         request=request, 
-        response=json.dumps(response, sort_keys=True), 
-        response_hash=sha256(json.dumps(response, sort_keys=True).encode("utf-8")).hexdigest(), 
+        response=response_text, 
+        response_hash=sha256(response_text.encode("utf-8")).hexdigest(), 
         requested_at=datetime.now()
         )
-        stmt = stmt.on_conflict_do_update(index_elements=["request"], set_=dict(response=json.dumps(response), response_hash=sha256(json.dumps(response, sort_keys=True).encode("utf-8")).hexdigest(), requested_at=datetime.now()))
+        stmt = stmt.on_conflict_do_update(index_elements=["request"], set_=dict(response=json.dumps(response), response_hash=sha256(response_text.encode("utf-8")).hexdigest(), requested_at=datetime.now()))
         s.execute(stmt)
 
 def find_in_cache_by_request(request: str) -> int | None:
