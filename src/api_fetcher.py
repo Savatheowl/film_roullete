@@ -87,7 +87,7 @@ async def get_film_list(include_adult: bool, language: str, page: int, sort_by: 
     if cache_id:
         print("Найден кэш")
         cached_request = db.get_cache_by_id(cache_id)
-        if (datetime.fromisoformat(cached_request.requested_at) - datetime.now()) <= timedelta(days=7):
+        if (cached_request.requested_at - datetime.now()) <= timedelta(days=7):
             print("Кэш берем, он свежий")
             return cached_request.response
     print("делаем запрос")

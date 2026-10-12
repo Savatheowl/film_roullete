@@ -87,6 +87,7 @@ def get_cache_by_id(id: int) -> RequestCache:
     with make_session() as s:
             stmt = select(RequestCache).where(RequestCache.id == id)
             row = s.execute(stmt).scalar_one()
+            s.expunge(row)
             return row
 
 class Genres(Base):
