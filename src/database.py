@@ -11,7 +11,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from src.config import Config
 
-engine = None
+engine: Engine = None
 
 
 def _get_engine():
