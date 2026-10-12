@@ -66,30 +66,34 @@ class RequestCache(Base):
         DateTime, nullable=False, default=datetime.now()
     )
 
+
 def cache_request(request: str, response: dict) -> None:
     response_text = json.dumps(response, sort_keys=True)
     with make_session() as s:
         stmt = sqlite_insert(RequestCache).values(
-        request=request, 
-        response=response_text, 
-        response_hash=sha256(response_text.encode("utf-8")).hexdigest(), 
-        requested_at=datetime.now()
+            request=request,
+            response=response_text,
+            response_hash=sha256(response_text.encode("utf-8")).hexdigest(),
+            requested_at=datetime.now()
         )
         stmt = stmt.on_conflict_do_update(index_elements=["request"], set_=dict(response=json.dumps(response), response_hash=sha256(response_text.encode("utf-8")).hexdigest(), requested_at=datetime.now()))
         s.execute(stmt)
+
 
 def find_in_cache_by_request(request: str) -> int | None:
     with make_session() as s:
         stmt = select(RequestCache).where(RequestCache.request == request)
         row = s.execute(stmt).scalar_one_or_none()
         return None if not row else row.id
-    
+
+
 def get_cache_by_id(id: int) -> RequestCache:
     with make_session() as s:
-            stmt = select(RequestCache).where(RequestCache.id == id)
-            row = s.execute(stmt).scalar_one()
-            s.expunge(row)
-            return row
+        stmt = select(RequestCache).where(RequestCache.id == id)
+        row = s.execute(stmt).scalar_one()
+        s.expunge(row)
+        return row
+
 
 class Genres(Base):
     __tablename__ = "genres"

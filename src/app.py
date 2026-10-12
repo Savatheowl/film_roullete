@@ -2,6 +2,8 @@ from flask import Flask, jsonify
 
 from src.config import Config
 from src.database import init_db, db_health_status_message, get_all_genres
+from src.api_fetcher import get_film_list
+import asyncio
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -14,6 +16,7 @@ app.json.ensure_ascii = False
 def index():
     return jsonify({"message": "Привет, народ!"})
 
+
 @app.route("/genres")
 def genres():
     result = []
@@ -25,6 +28,17 @@ def genres():
             "name_ru": genre.name_ru,
         })
     return jsonify(result)
+
+
+@app.route("/films")
+def films():
+    data = asyncio.run(get_film_list(
+        include_adult=True,
+        language="ru",
+        page=1
+    ))
+    return jsonify(data['results'])
+
 
 @app.route("/health")
 def health_flask():
