@@ -1,9 +1,11 @@
 from contextlib import contextmanager
 from datetime import datetime
 from hashlib import sha256
+from typing import Any
+
 
 from sqlalchemy import (DateTime, Engine, Integer, String, Text, create_engine,
-                        text, insert)
+                        text, insert, select)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from src.config import Config
@@ -73,6 +75,12 @@ class Genres(Base):
     name_en: Mapped[str] = mapped_column(String, nullable=False)
     
 
+def get_all_genres() -> list[Genres]:
+    with make_session() as s:
+        rows = s.scalars(select(Genres)).all()
+        return list(rows)
+
+
 def add_or_update_genre(tmdb_id: int = None, name_ru: str = None, name_en: str = None) -> None:
     stmt = sqlite_insert(Genres).values(tmdb_id=tmdb_id, name_ru=name_ru, name_en=name_en)
 
@@ -82,11 +90,6 @@ def add_or_update_genre(tmdb_id: int = None, name_ru: str = None, name_en: str =
     with make_session() as s:
         s.execute(stmt)
         s.commit()
-
-
-def add_or_update_bunch_genres(genres: list[dict]) -> None:
-    pass
-    # genres_obj
 
     
 # def save_request(request: str, response) -> None:

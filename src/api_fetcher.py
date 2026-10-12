@@ -57,7 +57,7 @@ async def get_genre_list() -> None:
     """
 
     for genre_ru, genre_en in zip(response_ru['genres'], response_en['genres']):
-        genre_en['name_ru'] = genre_ru['name']
+        genre_en['name_ru'] = genre_ru['name'].title()
 
     save_genres_to_db(response_en)
 
