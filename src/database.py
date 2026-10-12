@@ -81,7 +81,7 @@ def get_all_genres() -> list[Genres]:
         return list(rows)
 
 
-def add_or_update_genre(tmdb_id: int = None, name_ru: str = None, name_en: str = None) -> None:
+def add_or_update_genre(tmdb_id: int, name_ru: str, name_en: str) -> None:
     stmt = sqlite_insert(Genres).values(tmdb_id=tmdb_id, name_ru=name_ru, name_en=name_en)
 
     # Если жанр с таким tmdb_id уже есть — обновляем name_ru и name_en
