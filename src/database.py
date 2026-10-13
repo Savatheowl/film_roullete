@@ -17,7 +17,7 @@ engine: Engine = None
 def _get_engine():
     global engine
     if engine is None:
-        engine = create_engine(Config.DATABASE_URL, echo=True)
+        engine = create_engine(Config.DATABASE_URL, echo=Config.DATABASE_ECHO)
     return engine
 
 

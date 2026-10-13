@@ -78,22 +78,24 @@ class SortBy(Enum):
     vote_count_desc = "vote_count.desc"
 
 
-# сделать выбор для пользователя ru или eng написание? перевод всего сйта изза этого?
-async def get_film_list(include_adult: bool, language: str, page: int, sort_by: SortBy = SortBy.popularity_asc) -> dict:
-    url = f"https://api.themoviedb.org/3/discover/movie?include_adult={include_adult}&include_video=false&language={language}&page={page}&sort_by={sort_by}"
-    
-    cache_id: int | None = db.find_in_cache_by_request(url)
+async def _in_cache_check(request: str, cache_ttl: timedelta = timedelta(days=7)) -> dict:
+    cache_id: int | None = db.find_in_cache_by_request(request)
     if cache_id:
         cached_request = db.get_cache_by_id(cache_id)
-        if (cached_request.requested_at - datetime.now()) <= timedelta(days=7):
-            print("Кэш берем, он свежий")
+        if (cached_request.requested_at - datetime.now()) <= cache_ttl:
             return json.loads(cached_request.response)
-    response = await _get_sth_base(url)
+    response = await _get_sth_base(request)
     db.cache_request(
-        request=url,
+        request=request,
         response=response
     )
     return json.loads(response)
+
+# сделать выбор для пользователя ru или eng написание? перевод всего сйта изза этого?
+async def get_film_list(include_adult: bool, language: str, page: int, sort_by: SortBy = SortBy.popularity_asc) -> dict:
+    url = f"https://api.themoviedb.org/3/discover/movie?include_adult={include_adult}&include_video=false&language={language}&page={page}&sort_by={sort_by}"
+    response: dict = await _in_cache_check(url)
+    return response
     
 
 async def film_serch_query(query: str) -> dict:
