@@ -22,7 +22,6 @@ HEADERS = {
 }
 
 
-
 async def _get_sth_base(url: str) -> Any:
     async with httpx.AsyncClient() as client:
             response = await client.get(url, headers=HEADERS)
@@ -99,10 +98,10 @@ async def get_film_list(include_adult: bool, language: str, page: int, sort_by: 
     )
     return response
     
-    
 
 async def film_serch_query(query: str) -> dict:
     pass
+
 
 async def main():
     result = await get_genre_list()

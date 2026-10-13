@@ -8,11 +8,7 @@ import asyncio
 async def main():
     init_db()
     await get_genre_list()
-    a = await get_film_list(
-        include_adult=True,
-        language="ru",
-        page=1,
-    )
+    app_run()
     
 
 if __name__ == "__main__":
