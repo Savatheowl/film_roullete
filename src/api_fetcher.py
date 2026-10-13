@@ -84,19 +84,16 @@ async def get_film_list(include_adult: bool, language: str, page: int, sort_by: 
     
     cache_id: int | None = db.find_in_cache_by_request(url)
     if cache_id:
-        print("Найден кэш")
         cached_request = db.get_cache_by_id(cache_id)
         if (cached_request.requested_at - datetime.now()) <= timedelta(days=7):
             print("Кэш берем, он свежий")
-            return cached_request.response
-    print("делаем запрос")
+            return json.loads(cached_request.response)
     response = await _get_sth_base(url)
-    print("кэшируем запрос")
     db.cache_request(
         request=url,
         response=response
     )
-    return response
+    return json.loads(response)
     
 
 async def film_serch_query(query: str) -> dict:

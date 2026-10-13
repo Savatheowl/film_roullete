@@ -37,7 +37,7 @@ def films():
         language="ru",
         page=1
     ))
-    return jsonify(data['results'])
+    return jsonify(data)
 
 
 @app.route("/health")
