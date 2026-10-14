@@ -2,6 +2,7 @@
 import httpx
 import asyncio
 from enum import Enum
+from urllib.parse import quote
 
 from src.config import Config
 from typing import Any
@@ -22,6 +23,23 @@ HEADERS = {
 }
 
 
+class SortBy(Enum):
+    original_title_asc = "original_title.asc"
+    original_title_desc = "original_title.desc"
+    popularity_asc = "popularity.asc"
+    popularity_desc = "popularity.desc"
+    revenue_asc = "revenue.asc"
+    revenue_desc = "revenue.desc"
+    primary_release_date_asc = "primary_release_date.asc"
+    primary_release_date_desc ="primary_release_date.desc"
+    title_asc = "title.asc"
+    title_desc = "title.desc"
+    vote_average_asc = "vote_average.asc"
+    vote_average_desc = "vote_average.desc"
+    vote_count_asc = "vote_count.asc"
+    vote_count_desc = "vote_count.desc"
+
+
 async def _get_sth_base(url: str) -> Any:
     async with httpx.AsyncClient() as client:
             response = await client.get(url, headers=HEADERS)
@@ -38,9 +56,24 @@ def save_genres_to_db(response: dict) -> None:
         )
 
 
+async def _in_cache_check(request: str, cache_ttl: timedelta = timedelta(days=7)) -> dict:
+    cache_id: int | None = db.find_in_cache_by_request(request)
+    if cache_id:
+        cached_request = db.get_cache_by_id(cache_id)
+        if (cached_request.requested_at - datetime.now()) <= cache_ttl:
+            return json.loads(cached_request.response)
+    response = await _get_sth_base(request)
+    db.cache_request(
+        request=request,
+        response=response
+    )
+    return response
+
+
+# Надо подумать чтобы перевести с БД. То есть чтобы не сохранялось в БД, а извлекалось из кэшированных API запросов, как везде крч
 async def get_genre_list() -> None:
-    response_en = await _get_sth_base("https://api.themoviedb.org/3/genre/movie/list?language=en")
-    response_ru = await _get_sth_base("https://api.themoviedb.org/3/genre/movie/list?language=ru")
+    response_en = await _in_cache_check("https://api.themoviedb.org/3/genre/movie/list?language=en")
+    response_ru = await _in_cache_check("https://api.themoviedb.org/3/genre/movie/list?language=ru")
 
     """
     API result:
@@ -59,37 +92,7 @@ async def get_genre_list() -> None:
         genre_en['name_ru'] = genre_ru['name'].title()
 
     save_genres_to_db(response_en)
-
-
-class SortBy(Enum):
-    original_title_asc = "original_title.asc"
-    original_title_desc = "original_title.desc"
-    popularity_asc = "popularity.asc"
-    popularity_desc = "popularity.desc"
-    revenue_asc = "revenue.asc"
-    revenue_desc = "revenue.desc"
-    primary_release_date_asc = "primary_release_date.asc"
-    primary_release_date_desc ="primary_release_date.desc"
-    title_asc = "title.asc"
-    title_desc = "title.desc"
-    vote_average_asc = "vote_average.asc"
-    vote_average_desc = "vote_average.desc"
-    vote_count_asc = "vote_count.asc"
-    vote_count_desc = "vote_count.desc"
-
-
-async def _in_cache_check(request: str, cache_ttl: timedelta = timedelta(days=7)) -> dict:
-    cache_id: int | None = db.find_in_cache_by_request(request)
-    if cache_id:
-        cached_request = db.get_cache_by_id(cache_id)
-        if (cached_request.requested_at - datetime.now()) <= cache_ttl:
-            return json.loads(cached_request.response)
-    response = await _get_sth_base(request)
-    db.cache_request(
-        request=request,
-        response=response
-    )
-    return json.loads(response)
+    
 
 # сделать выбор для пользователя ru или eng написание? перевод всего сйта изза этого?
 async def get_film_list(include_adult: bool, language: str, page: int, sort_by: SortBy = SortBy.popularity_asc) -> dict:
@@ -98,9 +101,18 @@ async def get_film_list(include_adult: bool, language: str, page: int, sort_by: 
     return response
     
 
-async def film_serch_query(query: str) -> dict:
-    pass
+async def film_serch_query(query: str, include_adult: bool = False, language: str = "en-US", page: int = 1) -> dict:
+    query = quote(query)
+    url: str = f"https://api.themoviedb.org/3/search/movie?query={query}&include_adult={include_adult}&language={language}&page={page}" 
+    response: dict = await _in_cache_check(url)
+    return response
 
+
+# код русского "ru" работает, страницу можно не менять потому что 20 похожих достаточно
+async def get_similar_films(tmdb_id: int, language: str = "en-US", page: int = 1) -> dict:
+    url: str = f"https://api.themoviedb.org/3/movie/{tmdb_id}/similar?language={language}&page={page}" 
+    response: dict = await _in_cache_check(url)
+    return response
 
 async def main():
     result = await get_genre_list()

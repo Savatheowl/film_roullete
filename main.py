@@ -1,6 +1,6 @@
 from src.app import app_run
 from src.database import init_db
-from src.api_fetcher import get_genre_list, get_film_list, SortBy
+from src.api_fetcher import get_genre_list, SortBy
 
 import asyncio
 
