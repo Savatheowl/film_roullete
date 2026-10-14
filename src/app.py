@@ -1,11 +1,17 @@
-from flask import Flask, jsonify
-
-from src.config import Config
-from src.database import init_db, db_health_status_message, get_all_genres
-from src.api_fetcher import get_film_list
 import asyncio
+from pathlib import Path
 
-app = Flask(__name__)
+from flask import Flask, jsonify, render_template
+
+from src.api_fetcher import get_film_list
+from src.config import Config
+from src.database import db_health_status_message, get_all_genres, init_db
+
+app = Flask(
+    import_name=__name__,
+    template_folder=Path("../templates"),
+    static_folder=Path("../static"),
+)
 app.config.from_object(Config)
 app.config["SECRET_KEY"] = Config.SECRET_KEY
 app.config["DEBUG"] = Config.DEBUG
@@ -14,30 +20,33 @@ app.json.ensure_ascii = False
 
 @app.route("/")
 def index():
-    return jsonify({"message": "Привет, народ!"})
+    return render_template("index.html")
+
+
+@app.route("/roulette")
+def roulette_page():
+    return render_template("roulette.html")
 
 
 @app.route("/genres")
 def genres():
     result = []
     for genre in get_all_genres():
-        result.append({
-            "id": genre.id,
-            "tmdb_id": genre.tmdb_id,
-            "name": genre.name_en,
-            "name_ru": genre.name_ru,
-        })
+        result.append(
+            {
+                "id": genre.id,
+                "tmdb_id": genre.tmdb_id,
+                "name": genre.name_en,
+                "name_ru": genre.name_ru,
+            }
+        )
     return jsonify(result)
 
 
 @app.route("/films")
 def films():
-    data = asyncio.run(get_film_list(
-        include_adult=True,
-        language="ru",
-        page=1
-    ))
-    return jsonify(data['results'])
+    data = asyncio.run(get_film_list(include_adult=True, language="ru", page=1))
+    return jsonify(data)
 
 
 @app.route("/health")
