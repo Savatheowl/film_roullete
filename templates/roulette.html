@@ -1,8 +1,58 @@
 {% extends 'base.html' %}
 
+{% block title %}Film Roulette{% endblock %}
 
-{% block title %}Рулетка{% endblock %}
+{% block css %} <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">{% endblock %}
 
+{% block header %}
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container-fluid container">
+            <a href="#" class="navbar-brand d-flex align-items-center">
+                <span class="logo-circle me-2 text-warning">●</span>
+                <span class="fw-bold">FILM ROULETTE</span>
+            </a>
+            <div>
+                <div class="ms-auto d-flex align-content-center gap-3">
+                    <a href="#" class="nav-link text-light">Фильмы</a>
+                    <a href="#" class="nav-link text-warning">Рулетка</a>
+                    <input type="text" class="form-control search-input form-control-sm" placeholder="Поиск по названию" name="" id="">
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+    
 {% block content %}
-    <h1>Рулетка</h1>
+    <section>
+        <div class="container">
+            <div class="row mt-5">
+                <div class="col-12 text-center">
+                    <h1 class="display-4 fw-bold mb-4">ЧТО СМОТРИМ СЕГОДНЯ?</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <d class="d-flex flex-wrap justify-content-center gap-5 mb-3">
+                        <button class="btn btn-warning btn-sm genre-chill rounded-pill active">Драма Drama</button>
+                        <button class="btn btn-outline-light btn-sm genre-chill rounded-pill">Комедия Comedy</button>
+                        <button class="btn btn-outline-light btn-sm genre-chill rounded-pill">Хоррор Horror</button>
+                        <div class="dropdown">
+                            <dutton class="btn btn-outline-light btn-sm rounded-pill dropdown-toggle" data-toggle="dropdown">
+                                Сортировка по рейтингу:
+                            </dutton>
+                            <ul class="dropdown-menu dropdown-menu-dark">
+                                <li><a href="#" class="dropdown-item" data-sort="popularity.desc">По популярности</a></li>
+                                <li><a href="#" class="dropdown-item" data-sort="vote_average.desc">По рейтингу</a></li>
+                                <li><a href="#" class="dropdown-item" data-sort="release_date.desc">По дате выхода</a></li>
+                            </ul>
+                        </div>
+                    </d>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        
+    </section>
 {% endblock %}
