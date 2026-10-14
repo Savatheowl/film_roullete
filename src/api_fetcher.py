@@ -56,10 +56,7 @@ def save_genres_to_db(response: dict) -> None:
         )
 
 
-async def _in_cache_check(
-    request: str,
-    cache_ttl: timedelta = timedelta(days=7)
-) -> dict:
+async def _in_cache_check(request: str, cache_ttl: timedelta = timedelta(days=7)) -> dict:
     cache_id: int | None = db.find_in_cache_by_request(request)
     if cache_id:
         cached_request = db.get_cache_by_id(cache_id)
@@ -111,10 +108,7 @@ async def get_film_list(
 
 
 async def film_serch_query(
-    query: str,
-    include_adult: bool = False,
-    language: str = "en-US",
-    page: int = 1
+    query: str, include_adult: bool = False, language: str = "en-US", page: int = 1
 ) -> dict:
     query = quote(query)
     url: str = f"https://api.themoviedb.org/3/search/movie?query={query}&include_adult={include_adult}&language={language}&page={page}"
@@ -124,9 +118,7 @@ async def film_serch_query(
 
 # код русского "ru" работает, страницу можно не менять потому что 20 похожих достаточно
 async def get_similar_films(
-    tmdb_id: int,
-    language: str = "en-US",
-    page: int = 1
+    tmdb_id: int, language: str = "en-US", page: int = 1
 ) -> dict:
     url: str = f"https://api.themoviedb.org/3/movie/{tmdb_id}/similar?language={language}&page={page}"
     response: dict = await _in_cache_check(url)

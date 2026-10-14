@@ -4,8 +4,17 @@ from datetime import datetime
 from hashlib import sha256
 from typing import Any
 
-from sqlalchemy import (DateTime, Engine, Integer, String, Text, create_engine,
-                        insert, select, text)
+from sqlalchemy import (
+    DateTime,
+    Engine,
+    Integer,
+    String,
+    Text,
+    create_engine,
+    insert,
+    select,
+    text,
+)
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
