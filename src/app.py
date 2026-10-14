@@ -1,9 +1,10 @@
+import asyncio
+
 from flask import Flask, jsonify, render_template
 
-from src.config import Config
-from src.database import init_db, db_health_status_message, get_all_genres
 from src.api_fetcher import get_film_list
-import asyncio
+from src.config import Config
+from src.database import db_health_status_message, get_all_genres, init_db
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -21,22 +22,20 @@ def index():
 def genres():
     result = []
     for genre in get_all_genres():
-        result.append({
-            "id": genre.id,
-            "tmdb_id": genre.tmdb_id,
-            "name": genre.name_en,
-            "name_ru": genre.name_ru,
-        })
+        result.append(
+            {
+                "id": genre.id,
+                "tmdb_id": genre.tmdb_id,
+                "name": genre.name_en,
+                "name_ru": genre.name_ru,
+            }
+        )
     return jsonify(result)
 
 
 @app.route("/films")
 def films():
-    data = asyncio.run(get_film_list(
-        include_adult=True,
-        language="ru",
-        page=1
-    ))
+    data = asyncio.run(get_film_list(include_adult=True, language="ru", page=1))
     return jsonify(data)
 
 

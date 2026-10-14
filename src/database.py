@@ -1,14 +1,14 @@
+import json
 from contextlib import contextmanager
 from datetime import datetime
 from hashlib import sha256
 from typing import Any
-import json
-
 
 from sqlalchemy import (DateTime, Engine, Integer, String, Text, create_engine,
-                        text, insert, select)
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+                        insert, select, text)
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+
 from src.config import Config
 
 engine: Engine = None
@@ -74,9 +74,16 @@ def cache_request(request: str, response: dict) -> None:
             request=request,
             response=response_text,
             response_hash=sha256(response_text.encode("utf-8")).hexdigest(),
-            requested_at=datetime.now()
+            requested_at=datetime.now(),
         )
-        stmt = stmt.on_conflict_do_update(index_elements=["request"], set_=dict(response=json.dumps(response), response_hash=sha256(response_text.encode("utf-8")).hexdigest(), requested_at=datetime.now()))
+        stmt = stmt.on_conflict_do_update(
+            index_elements=["request"],
+            set_=dict(
+                response=json.dumps(response),
+                response_hash=sha256(response_text.encode("utf-8")).hexdigest(),
+                requested_at=datetime.now(),
+            ),
+        )
         s.execute(stmt)
 
 
@@ -97,13 +104,13 @@ def get_cache_by_id(id: int) -> RequestCache:
 
 class Genres(Base):
     __tablename__ = "genres"
-    
+
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    
+
     tmdb_id: Mapped[int] = mapped_column(Integer, unique=True, nullable=False)
     name_ru: Mapped[str] = mapped_column(String, nullable=False)
     name_en: Mapped[str] = mapped_column(String, nullable=False)
-    
+
 
 def get_all_genres() -> list[Genres]:
     with make_session() as s:
@@ -112,10 +119,14 @@ def get_all_genres() -> list[Genres]:
 
 
 def add_or_update_genre(tmdb_id: int, name_ru: str, name_en: str) -> None:
-    stmt = sqlite_insert(Genres).values(tmdb_id=tmdb_id, name_ru=name_ru, name_en=name_en)
+    stmt = sqlite_insert(Genres).values(
+        tmdb_id=tmdb_id, name_ru=name_ru, name_en=name_en
+    )
 
     # Если жанр с таким tmdb_id уже есть — обновляем name_ru и name_en
-    stmt = stmt.on_conflict_do_update(index_elements=["tmdb_id"], set_=dict(name_ru=name_ru, name_en=name_en))
+    stmt = stmt.on_conflict_do_update(
+        index_elements=["tmdb_id"], set_=dict(name_ru=name_ru, name_en=name_en)
+    )
 
     with make_session() as s:
         s.execute(stmt)
