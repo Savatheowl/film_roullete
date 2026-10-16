@@ -15,7 +15,7 @@
                 <div class="ms-auto d-flex align-content-center gap-3">
                     <a href="#" class="nav-link text-light">Фильмы</a>
                     <a href="#" class="nav-link text-warning">Рулетка</a>
-                    <input type="text" class="form-control search-input form-control-sm" placeholder="Поиск по названию" name="" id="">
+                    <input type="text" class="rounded-pill form-control search-input form-control-sm" placeholder="Поиск по названию" name="" id="">
                 </div>
             </div>
         </div>
@@ -33,11 +33,11 @@
             <div class="row">
                 <div class="col-12">
                     <d class="d-flex flex-wrap justify-content-center gap-5 mb-3">
-                        <button class="btn btn-warning btn-sm genre-chill rounded-pill active">Драма Drama</button>
-                        <button class="btn btn-outline-light btn-sm genre-chill rounded-pill">Комедия Comedy</button>
-                        <button class="btn btn-outline-light btn-sm genre-chill rounded-pill">Хоррор Horror</button>
+                        <button class="btn btn-warning btn-sm genre-chip rounded-pill active mr-3">Драма Drama</button>
+                        <button class="btn btn-outline-light btn-sm genre-chip rounded-pill mr-3 ml-3">Комедия Comedy</button>
+                        <button class="btn btn-outline-light btn-sm genre-chip rounded-pill mr-3 ml-3">Хоррор Horror</button>
                         <div class="dropdown">
-                            <dutton class="btn btn-outline-light btn-sm rounded-pill dropdown-toggle" data-toggle="dropdown">
+                            <dutton class="genre-chip btn btn-outline-light btn-sm rounded-pill dropdown-toggle ml-3" data-toggle="dropdown">
                                 Сортировка по рейтингу:
                             </dutton>
                             <ul class="dropdown-menu dropdown-menu-dark">
@@ -53,6 +53,80 @@
     </section>
 
     <section>
-        
+        <div class="container mb-5">
+            <div class="poster-strip d-flex justify-content-center gap-3 p-4 border border-warning">
+                <div class="poster-placeholder mr-3 ml-3"></div>
+                <div class="poster-placeholder mr-3 ml-3"></div>
+                <div class="poster-placeholder mr-3 ml-3 active"></div>
+                <div class="poster-placeholder mr-3 ml-3"></div>
+                <div class="poster-placeholder mr-3 ml-3"></div>
+            </div>
+        </div>
     </section>
+
+    <section>
+        <div class="container mb-5">
+            <div class="film-card bg-dark rounded-3 p-4 border border-secondary">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img id="filmPoster" src="https://via.placeholder.com/300x450/333/888?text=Постер" alt="Постер" class="img-fluid rounded-3">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-12">
+                                <small class="text-muted">ВАШ ФИЛЬМ</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h2 id="filmTitle" class="fw-bold mt-2">[НАЗВАНИЕ НА РУССКОМ]</h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <p id="filmOriginalTitle" class="text-muted mt-2">[НАЗВАНИЕ НА АНГЛИЙСКОМ]</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex align-items-center gap-3 mb-3">
+                                    <span id="filmRating" class="rating fs-3 fw-bold text-warning">8.4</span>
+                                    <span class="text-muted">⭐</span>
+                                    <span id="filmGenres" class="text-muted mr-3">Драма, Триллер</span>
+                                    <span id="filmYear" class="text-muted mr-3">Год: 2019</span>
+                                    <span id="filmRuntime" class="text-muted mr-3">Длительность: 142 мин</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <p id="filmOverview" class="text-light mb-4">
+                                    [Краткое описание фильма]
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex gap-2">
+                                    <button id="rerollBtn" class="btn btn-warning rounded-pill mr-3">
+                                        <i class="bi bi-arrow-clockwise"></i> Крутить заново
+                                    </button>
+                                    <button id="rerollBtn" class="btn btn-outline-light rounded-pill mr-3 ml-3">
+                                        <i class="bi bi-collection"></i> Похожие фильмы
+                                    </button>
+                                    <a id="tmdbLink" target="_blank" href="#" class="btn btn-outline-secondary ml-3">
+                                        Страница на TMDB <i class="bi bi-box-arrow-up-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block js %}
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% endblock %}
