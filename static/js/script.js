@@ -1,3 +1,11 @@
+const GENRE_MAP = {
+    28: "Боевик", 12: "Приключения", 16: "Мультфильм", 35: "Комедия",
+    80: "Криминал", 99: "Документальный", 18: "Драма", 10751: "Семейный",
+    14: "Фэнтези", 36: "История", 27: "Ужасы", 10402: "Музыка",
+    9648: "Детектив", 10749: "Мелодрама", 878: "Фантастика",
+    10770: "ТВ-фильм", 53: "Триллер", 10752: "Военный", 37: "Вестерн"
+};
+
 let allFilms = [];
 let currentFilm = null;
 
@@ -29,21 +37,32 @@ function displayFilm(film){
 
     document.getElementById('filmTitle').textContent = film.title || 'Без названия';
     document.getElementById('filmOriginalTitle').textContent = film.original_title || '';
-
-
-    // Потом подумать как добавить
-    // document.getElementById('filmRating').textContent = film.vote_average ? film.vote_average.toFixed(1) : 'N/A';
-    // document.getElementById('filmYear').textContent = film.release_date ? film.release_date.slice(0, 4): '';
-    // document.getElementById('filmGenres').textContent = film.genre_ids ? film.genre_ids.join(', '): '';
-
     document.getElementById('filmOverview').textContent = film.overview || 'Описание отсутствует';
 
     document.getElementById('tmdbLink').href =
         `https://www.themoviedb.org/movie/${film.id}`;
 
-    document.querySelectorAll('.poster-placeholder').forEach(el => {
-        el.classList.toggle('active', el.dataset.filmId == film.id);
-    });
+        
+    const ratingEl = document.getElementById('filmRating');
+    if(ratingEl){
+        ratingEl.textContent = film.vote_average ? film.vote_average.toFixed(1): 'N/A';
+    }
+        
+    const yearEl = document.getElementById('filmYear');
+    if(yearEl){
+        const year = film.release_date ? film.release_date.slice(0, 4): '';
+        yearEl.textContent = year ? `Год: ${year}` : '';
+    }
+
+    const genresEl = document.getElementById('filmGenres');
+    if(genresEl){
+        if(film.genre_ids && film.genre_ids.length > 0){
+            const genresName = film.genre_ids.slice(0, 3).map(id => GENRE_MAP[id]||'Неизвестно').join(', ');
+            genresEl.textContent = genresName;
+        } else{
+            genresEl.textContent = 'Жанры не указаны';
+        }
+    }
 
     document.querySelectorAll('.poster-placeholder').forEach(el => {
         const isActive = el.dataset.filmId == film.id;

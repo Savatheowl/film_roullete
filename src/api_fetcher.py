@@ -16,7 +16,6 @@ REQUEST_PS = 35
 
 config = Config()
 
-
 HEADERS = {
     "accept": "application/json",
     "Authorization": f"Bearer {Config.TMDB_BEARER_TOKEN}",
