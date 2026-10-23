@@ -1,7 +1,7 @@
 import asyncio
 from pathlib import Path
 
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 
 from src.api_fetcher import get_film_list
 from src.config import Config
@@ -45,7 +45,11 @@ def genres():
 
 @app.route("/films")
 def films():
-    data = asyncio.run(get_film_list(include_adult=True, language="ru", page=1))
+    genre_id = request.args.get('genre', type=int)
+    sort_by = request.args.get('sort', default='popularity.desc')
+    page = request.args.get('page', type=int, default=1)
+
+    data = asyncio.run(get_film_list(include_adult=True, language="ru", page=page, sort_by=sort_by, genre_id=genre_id))
     return jsonify(data)
 
 

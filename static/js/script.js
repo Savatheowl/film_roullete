@@ -9,9 +9,17 @@ const GENRE_MAP = {
 let allFilms = [];
 let currentFilm = null;
 
+let currentGenre = '';
+let currentSort = 'popularity.desc';
+
 async function loadFilms(){
+    showLoader(); 
     try{
-        const response = await fetch('/films');
+        const url = new URL('/films', window.location.origin);
+        if(currentGenre) url.searchParams.append('genre', currentGenre);
+        if(currentSort) url.searchParams.append('sort', currentSort);
+
+        const response = await fetch(url);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         
         const data = await response.json();
@@ -27,6 +35,9 @@ async function loadFilms(){
     } catch(error){
         console.error('Ошибка загрузки: ', error);
         showError(`Не удалось загрузить фильмы: ${error.message}`);
+    }
+    finally{
+        hideLoader();
     }
 }
 
@@ -140,6 +151,35 @@ function showError(message) {
 document.addEventListener('DOMContentLoaded', () => {
     loadFilms();
 
+    document.querySelectorAll('.genre-chip').forEach(chip => {
+        chip.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            document.querySelectorAll('.genre-chip').forEach(c => {
+                c.classList.remove('active', 'btn-warning');
+                c.classList.add('btn-outline-light');
+            })
+
+            chip.classList.remove('btn-outline-light');
+            chip.classList.add('active', 'btn-warning');
+
+            currentGenre = chip.dataset.genre;
+            loadFilms();
+        })
+    })
+
+    document.querySelectorAll('.sort-item').forEach(item => {
+        item.addEventListener('click', e => {
+            e.preventDefault();
+
+            const dropdownBtn = document.querySelector('.dropdown-toggle');
+            dropdownBtn.textContent = item.textContent;
+
+            currentSort = item.dataset.sort;
+            loadFilms();
+        })
+    })
+
     const rerollBtn = document.getElementById('rerollBtn');
     if (rerollBtn) rerollBtn.addEventListener('click', reroll);
 
@@ -148,3 +188,12 @@ document.addEventListener('DOMContentLoaded', () => {
         similarBtn.addEventListener('click', loadSimilar);
     }
 });
+
+function showLoader(){
+    document.getElementById('loader')?.classList.remove('d-none');
+    document.getElementById('filmCard')?.classList.add('d-none');
+}
+function hideLoader() {
+    document.getElementById('loader')?.classList.add('d-none');
+    document.getElementById('filmCard')?.classList.remove('d-none');
+}

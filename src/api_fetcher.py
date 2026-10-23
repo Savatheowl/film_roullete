@@ -99,9 +99,14 @@ async def get_film_list(
     include_adult: bool,
     language: str,
     page: int,
-    sort_by: SortBy = SortBy.popularity_asc,
+    genre_id: int = None,
+    sort_by: SortBy = SortBy.popularity_asc
 ) -> dict:
     url: str = f"https://api.themoviedb.org/3/discover/movie?include_adult={include_adult}&include_video=false&language={language}&page={page}&sort_by={sort_by}"
+
+    if genre_id:
+        url += f"&with_genres={genre_id}"
+
     response: dict = await _in_cache_check(url)
     return response
 
