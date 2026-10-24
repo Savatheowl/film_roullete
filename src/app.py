@@ -3,7 +3,7 @@ from pathlib import Path
 
 from flask import Flask, jsonify, render_template, request
 
-from src.api_fetcher import get_film_list
+from src.api_fetcher import get_film_list, get_similar_films
 from src.config import Config
 from src.database import db_health_status_message, get_all_genres, init_db
 
@@ -50,6 +50,14 @@ def films():
     page = request.args.get('page', type=int, default=1)
 
     data = asyncio.run(get_film_list(include_adult=True, language="ru", page=page, sort_by=sort_by, genre_id=genre_id))
+    return jsonify(data)
+
+
+@app.route("/similar/<int:film_id>")
+def similar_films(film_id):
+    data = asyncio.run(get_similar_films(
+        tmdb_id=film_id, language="ru"
+    ))
     return jsonify(data)
 
 

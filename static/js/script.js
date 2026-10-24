@@ -19,6 +19,8 @@ async function loadFilms(){
         if(currentGenre) url.searchParams.append('genre', currentGenre);
         if(currentSort) url.searchParams.append('sort', currentSort);
 
+        document.getElementById('stripTitle').textContent = `Популярные фильмы` 
+
         const response = await fetch(url);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         
@@ -29,6 +31,9 @@ async function loadFilms(){
             showError('Фильм не найден');
             return;
         }
+
+        const stripTitle = document.getElementById('stripTitle');
+        if(stripTitle) stripTitle.textContent = 'Популярные фильмы';
 
         renderPosterStrip(allFilms);
         displayFilm(allFilms[0]);
@@ -118,7 +123,13 @@ function reroll() {
 
 // ===== ПОХОЖИЕ ФИЛЬМЫ =====
 async function loadSimilar() {
-    if (!currentFilm) return;
+    if (!currentFilm){
+        alert("Сначала выберите фильм");
+        return;
+    }
+
+    showLoader();
+
     try {
         const response = await fetch(`/similar/${currentFilm.id}`);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -130,14 +141,22 @@ async function loadSimilar() {
             return;
         }
 
+        const originalTitle = currentFilm.title
+
         // Заменяем текущий список на похожие
         allFilms = similar;
         displayFilm(similar[0]);
         renderPosterStrip(similar);
 
+        const stripTitle = document.getElementById('stripTitle');
+        if(stripTitle){
+            stripTitle.textContent = `Похожие на «${originalTitle}»`
+        }
     } catch (error) {
         console.error('Ошибка загрузки похожих:', error);
         alert(`Не удалось загрузить похожие: ${error.message}`);
+    } finally{
+        hideLoader();
     }
 }
 
@@ -183,10 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const rerollBtn = document.getElementById('rerollBtn');
     if (rerollBtn) rerollBtn.addEventListener('click', reroll);
 
-    const similarBtn = document.querySelector('.btn-outline-light');
-    if (similarBtn && similarBtn.textContent.includes('Похожие')) {
-        similarBtn.addEventListener('click', loadSimilar);
-    }
+    const similarBtn = document.getElementById('similarBtn');
+    if (similarBtn) similarBtn.addEventListener('click', loadSimilar);
 });
 
 function showLoader(){
