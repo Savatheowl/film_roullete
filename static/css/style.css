@@ -80,3 +80,12 @@ body{
     border-color: #e0b010;
     color: #000;
 }
+.hero-title{
+    font-size: 2rem;
+    line-height: 1.2;
+}
+@media (min-width: 768px){
+    .hero-title{
+        font-size: 3rem;
+    }
+}
