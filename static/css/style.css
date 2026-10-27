@@ -44,8 +44,8 @@ body{
     overflow-x: auto;
 }
 .poster-placeholder{
-    width:120px;
-    height: 180px;
+    width:90px;
+    height: 135px;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -87,5 +87,9 @@ body{
 @media (min-width: 768px){
     .hero-title{
         font-size: 3rem;
+    }
+    .poster-placeholder{
+        width: 120px;
+        height: 180px;
     }
 }
