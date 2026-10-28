@@ -20,11 +20,6 @@ app.json.ensure_ascii = False
 
 @app.route("/")
 def index():
-    return render_template("index.html")
-
-
-@app.route("/roulette")
-def roulette_page():
     return render_template("roulette.html")
 
 

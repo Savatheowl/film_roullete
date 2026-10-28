@@ -1,10 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,500;1,500&family=Manrope:wght@200..800&family=Oswald:wght@700&display=swap');
+
+:root {
+    --color-background: #121014;
+    --color-surface: #1D1A21;
+    --color-text-primary: #F3EDE0;
+    --color-text-secondary: #B9B1BD;
+    --color-accent: #F2B33D;
+    --color-danger: #E0524A;
+}
+/* colors */
+    .color-background {
+        color: var(--color-background);
+    }
+
+    .color-surface {
+        color: var(--color-surface);
+    }
+
+    .color-text-primary {
+        color: var(--color-text-primary);
+    }
+
+    .color-text-secondary {
+        color: var(--color-text-secondary);
+    }
+
+    .color-accent {
+        color: var(--color-accent);
+    }
+
+    .color-danger {
+        color: var(--color-danger);
+    }
+/* end colors */
+
+/* background colors */
+    .bg-color-background {
+        background-color: var(--color-background);
+    }
+
+    .bg-color-surface {
+        background-color: var(--color-surface);
+    }
+
+    .bg-color-text-primary {
+        background-color: var(--color-text-primary);
+    }
+
+    .bg-color-text-secondary {
+        background-color: var(--color-text-secondary);
+    }
+
+    .bg-color-accent {
+        background-color: var(--color-accent);
+    }
+
+    .bg-color-danger {
+        background-color: var(--color-danger);
+    }
+/* end background colors */
+
+/* fonts */
+    .oswald-700 {
+    font-family: "Oswald", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    }
+
+    .manrope-400 {
+    font-family: "Manrope", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    }
+
+    .manrope-600 {
+    font-family: "Manrope", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    }
+
+    .manrope-800 {
+    font-family: "Manrope", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+    }
+
+    .jetbrains-mono-500{
+    font-family: "JetBrains Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    }
+/* end fonts */
+
 body{
     background-color: #0d0d0d;
     color:#e0e0e0;
-    font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 .logo-circle{
-    color:#f5c518;
     font-size: 1rem;
 }
 .search-input{

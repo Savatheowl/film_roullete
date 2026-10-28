@@ -1,58 +1,40 @@
 {% extends 'base.html' %}
 
-{% block title %}Film Roulette{% endblock %}
+{% block title %}Главная{% endblock %}
 
-{% block css %} <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">{% endblock %}
-
-{% block header %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid container">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <span class="logo-circle me-2 text-warning">●</span>
-                <span class="fw-bold">FILM ROULETTE</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-target="#navbarNav" data-toggle="collapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="ms-auto d-flex flex-column flex-lg-row align-items-lg-center gap-3 mt-3 mt-lg-0">
-                    <a href="#" class="nav-link text-light">Фильмы</a>
-                    <a href="#" class="nav-link text-warning">Рулетка</a>
-                    <input type="text" class="rounded-pill form-control form-control-sm search-input w-100 w-lg-auto" placeholder="Поиск по названию" name="" id="">
-                </div>
-            </div>
-        </div>
-    </nav>
-{% endblock %}
-    
+{% block css %}{% endblock %}
+   
 {% block content %}
     <section>
         <div class="container">
             <div class="row mt-5">
                 <div class="col-12 text-center">
-                    <h1 class="fw-bold mb-4 hero-title">ЧТО СМОТРИМ СЕГОДНЯ?</h1>
+                    <h1 class="mb-4 oswald-700 hero-title">ЧТО СМОТРИМ СЕГОДНЯ?</h1>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="d-flex flex-wrap justify-content-center gap-4 mb-3">
-                        <button class="btn btn-warning btn-sm genre-chip rounded-pill active" data-genre="">Все фильмы</button>
-                        <button class="btn btn-outline-light btn-sm genre-chip rounded-pill" data-genre="18">Драма Drama</button>
-                        <button class="btn btn-outline-light btn-sm genre-chip rounded-pill" data-genre="35">Комедия Comedy</button>
-                        <button class="btn btn-outline-light btn-sm genre-chip rounded-pill" data-genre="27">Ужасы Horror</button>
-                        <div class="dropdown">
-                            <button class="genre-chip btn btn-outline-light btn-sm rounded-pill dropdown-toggle" data-toggle="dropdown">
-                                Сортировка по популярности:
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-dark">
-                                <li><a href="#" class="dropdown-item sort-item" data-sort="popularity.desc">По популярности</a></li>
-                                <li><a href="#" class="dropdown-item sort-item" data-sort="vote_average.desc">По рейтингу</a></li>
-                                <li><a href="#" class="dropdown-item sort-item" data-sort="release_date.desc">По дате выхода</a></li>
-                            </ul>
+            <!-- genre filters -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex flex-wrap justify-content-center gap-4 mb-3">
+                            <button class="btn btn-warning btn-sm genre-chip rounded-pill active " data-genre="">Все фильмы</button>
+                            <button class="btn btn-outline-light btn-sm genre-chip rounded-pill" data-genre="18">Драма Drama</button>
+                            <button class="btn btn-outline-light btn-sm genre-chip rounded-pill" data-genre="35">Комедия Comedy</button>
+                            <button class="btn btn-outline-light btn-sm genre-chip rounded-pill" data-genre="27">Ужасы Horror</button>
+                            <div class="dropdown">
+                                <button class="genre-chip btn btn-outline-light btn-sm rounded-pill dropdown-toggle" data-toggle="dropdown">
+                                    Сортировка по популярности:
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a href="#" class="dropdown-item sort-item" data-sort="popularity.desc">По популярности</a></li>
+                                    <li><a href="#" class="dropdown-item sort-item" data-sort="vote_average.desc">По рейтингу</a></li>
+                                    <li><a href="#" class="dropdown-item sort-item" data-sort="release_date.desc">По дате выхода</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <!-- end genre filters -->
+
         </div>
     </section>
 
@@ -137,6 +119,4 @@
     </section>
 {% endblock %}
 
-{% block js %}
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-{% endblock %}
+{% block js %}{% endblock %}
