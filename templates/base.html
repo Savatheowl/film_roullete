@@ -5,34 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Film Roulette - {% block title %}{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.2/font/bootstrap-icons.min.css">
   {% block css %} {% endblock %}
 </head>
 <body>
 <!-- header -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg">
       <div class="container-fluid container">
-          <a href="#" class="navbar-brand d-flex align-items-center">
+          <a href="#" class="navbar-brand d-flex align-items-center color-text-primary">
               <span class="logo-circle me-2 color-accent">●</span>
-              <span class="oswald-700 color-text-primary">FILM ROULETTE</span>
+              <span class="oswald-700">FILM ROULETTE</span>
           </a>
           <button class="navbar-toggler" type="button" data-target="#navbarNav" data-toggle="collapse">
               <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse manrope-600" id="navbarNav">
+          <div class="collapse navbar-collapse" id="navbarNav">
               <div class="ms-auto d-flex flex-column flex-lg-row align-items-lg-center gap-3 mt-3 mt-lg-0">
-                  <a href="#" class="nav-link color-text-primary">Фильмы</a>
+                  <a href="#" class="nav-link">Фильмы</a>
                   <a href="#" class="nav-link color-accent">Рулетка</a>
                   <input type="text" class="rounded-pill form-control form-control-sm search-input w-100 w-lg-auto" placeholder="Поиск по названию" name="" id="">
               </div>
           </div>
       </div>
   </nav>
+
+  <hr class="color-text-secondary">
 <!-- end header -->
 
   {% block content %} {% endblock %}
 
+
+<!-- footer -->
+  <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-color-surface">
+    <div class="container-fluid small justify-content-center">
+        <p class="">
+            Тут очень важный текст копирайтов. У нас есть
+            <a href="#" class="color-accent">Политика конфиденциальности</a>
+            и 
+            <a href="#" class="color-accent">Правила использования</a>.
+            Вы их, кстати, соблюдаете
+        </p>
+    </div>
+    </div>
+  </nav>
+<!-- end footer -->
 
   <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>

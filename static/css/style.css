@@ -1,192 +1,250 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,500;1,500&family=Manrope:wght@200..800&family=Oswald:wght@700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,500;1,500&family=Manrope:wght@200..800&family=Oswald:wght@700&display=swap");
 
 :root {
-    --color-background: #121014;
-    --color-surface: #1D1A21;
-    --color-text-primary: #F3EDE0;
-    --color-text-secondary: #B9B1BD;
-    --color-accent: #F2B33D;
-    --color-danger: #E0524A;
+  --color-background: #121014;
+  --color-surface: #1d1a21;
+  --color-text-primary: #f3ede0;
+  --color-text-secondary: #b9b1bd;
+  --color-accent: #f2b33d;
+  --color-danger: #e0524a;
 }
+
 /* colors */
-    .color-background {
-        color: var(--color-background);
-    }
+.color-background {
+  color: var(--color-background);
+}
 
-    .color-surface {
-        color: var(--color-surface);
-    }
+.color-surface {
+  color: var(--color-surface);
+}
 
-    .color-text-primary {
-        color: var(--color-text-primary);
-    }
+.color-text-primary {
+  color: var(--color-text-primary);
+}
 
-    .color-text-secondary {
-        color: var(--color-text-secondary);
-    }
+.color-text-secondary {
+  color: var(--color-text-secondary);
+}
 
-    .color-accent {
-        color: var(--color-accent);
-    }
+.color-accent {
+  color: var(--color-accent);
+}
 
-    .color-danger {
-        color: var(--color-danger);
-    }
+.color-danger {
+  color: var(--color-danger);
+}
+
 /* end colors */
 
 /* background colors */
-    .bg-color-background {
-        background-color: var(--color-background);
-    }
+.bg-color-background {
+  background-color: var(--color-background);
+}
 
-    .bg-color-surface {
-        background-color: var(--color-surface);
-    }
+.bg-color-surface {
+  background-color: var(--color-surface);
+}
 
-    .bg-color-text-primary {
-        background-color: var(--color-text-primary);
-    }
+.bg-color-text-primary {
+  background-color: var(--color-text-primary);
+}
 
-    .bg-color-text-secondary {
-        background-color: var(--color-text-secondary);
-    }
+.bg-color-text-secondary {
+  background-color: var(--color-text-secondary);
+}
 
-    .bg-color-accent {
-        background-color: var(--color-accent);
-    }
+.bg-color-accent {
+  background-color: var(--color-accent);
+}
 
-    .bg-color-danger {
-        background-color: var(--color-danger);
-    }
+.bg-color-danger {
+  background-color: var(--color-danger);
+}
+
 /* end background colors */
 
+/* border color */
+.border-color-white {
+  border-color: var(--color-text-secondary);
+}
+
+.border-color-accent {
+  border-color: var(--color-accent);
+}
+
+.border-color-danger {
+  border-color: var(--color-danger);
+}
+
+/* end border color */
+
 /* fonts */
-    .oswald-700 {
-    font-family: "Oswald", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 700;
-    font-style: normal;
-    }
+.oswald-700 {
+  font-family: "Oswald", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
 
-    .manrope-400 {
-    font-family: "Manrope", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    }
+.manrope-400 {
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
 
-    .manrope-600 {
-    font-family: "Manrope", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 600;
-    font-style: normal;
-    }
+.manrope-600 {
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
 
-    .manrope-800 {
-    font-family: "Manrope", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 800;
-    font-style: normal;
-    }
+.manrope-800 {
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+}
 
-    .jetbrains-mono-500{
-    font-family: "JetBrains Mono", monospace;
-    font-optical-sizing: auto;
-    font-weight: 500;
-    font-style: normal;
-    }
+.jetbrains-mono-500 {
+  font-family: "JetBrains Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
 /* end fonts */
 
-body{
-    background-color: #0d0d0d;
-    color:#e0e0e0;
+@keyframes PageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.logo-circle{
-    font-size: 1rem;
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  min-width: 100vh;
+  min-height: 100vh;
+  animation: PageFadeIn 1s ease-in-out forwards;
+
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
 }
-.search-input{
-    background-color: transparent;
-    border: 1px solid #444;
-    color:#e0e0e0;
-    max-width: 250px;
+
+/* nav bar */
+.logo-circle {
+  font-size: 1rem;
 }
+
+.search-input {
+  background-color: transparent;
+  border: 1px solid var(--color-text-secondary);
+  max-width: 250px;
+  padding-left: 3%;
+}
+
 .search-input::placeholder {
-    color: #888;
-}
-.search-input:focus{
-    background-color: #1a1a1a;
-    border-color:#f5c518;
-    color: #fff;
-    box-shadow: none;
+  color: var(--color-text-secondary);
 }
 
-.genre-chip{
-    font-size: 0.85rem;
-    padding: 6px 16px;
-    transition: all 0.2s;
+.search-input:focus {
+  border-color: var(--color-accent);
+  background-color: var(--color-background);
+  color: var(--color-text-secondary);
+  box-shadow: 0 0 13px var(--color-accent);
 }
-.genre-chip.active{
-    background-color: #f5c518;
-    border-color: #f5c518;
-    color: #000;
-}
-.genre-chip:hover{
-    border-color: #f5c518;
-    color: #f5c518;
+/* end nav bar */
+
+.hero-title {
+  font-size: 2rem;
+  line-height: 1.2;
 }
 
-.poster-strip{
-    background-color: #1a1a1a;
-    padding: 20px;
-    overflow-x: auto;
+/* genre filter */
+
+.genre-chip {
+  font-size: 0.85rem;
+  padding: 6px 16px;
+  transition: all 0.2s;
 }
-.poster-placeholder{
-    width:90px;
-    height: 135px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: #333;
-    border-radius: 8px;
-    flex-shrink: 0;
-    transition: all 0.3s;
-    cursor: pointer;
+
+.genre-chip.active {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-background);
 }
-.poster-placeholder:hover{
-    transform: scale(1.08);
-    box-shadow: 0 0 20px rgba(245, 197, 24, 0.4);
+
+.genre-chip:hover {
+  background-color: var(--color-background);
+  border-color: var(--color-accent);
+  color: var(--color-text-primary);
 }
+
+/* end genre filter */
+
+.poster-strip {
+  background-color: var(--color-surface);
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.poster-placeholder {
+  width: 90px;
+  height: 135px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: var(--color-surface);
+  border-radius: 8px;
+  flex-shrink: 0;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.poster-placeholder:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px var(--color-accent);
+}
+
 .poster-placeholder.active {
-    border: 2px solid #f5c518;
-    box-shadow: 0 0 20px rgba(245, 197, 24, 0.6);
+  border: 2px solid var(--color-accent);
+  box-shadow: 0 0 20px var(--color-accent);
 }
-.film-card{
-    background-color: #1a1a1a !important;
+
+.rating {
+  color: var(--color-accent);
 }
-.rating{
-    color:#f5c518;
+
+.btn-warning {
+  border-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-surface);
+  font-weight: 600;
 }
-.btn-warning{
-    border-color: #f5c518;
-    border-color: #f5c518;
-    color: #000;
-    font-weight: 600;
-}
+
 .btn-warning:hover {
-    background-color: #e0b010;
-    border-color: #e0b010;
-    color: #000;
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-background);
 }
-.hero-title{
-    font-size: 2rem;
-    line-height: 1.2;
-}
-@media (min-width: 768px){
-    .hero-title{
-        font-size: 3rem;
-    }
-    .poster-placeholder{
-        width: 120px;
-        height: 180px;
-    }
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 3rem;
+  }
+
+  .poster-placeholder {
+    width: 120px;
+    height: 180px;
+  }
 }
